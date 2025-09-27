@@ -2,7 +2,7 @@
 from tkinter import NO
 import requests
 from telegram import BotCommand, InlineKeyboardButton
-from config import USERS_WHITELIST
+from whitelist_manager import whitelist_manager
 from banner_manager import banner_manager
 from banner_card.creating_banner_card import make_banner_card_base64
 from io import BytesIO
@@ -14,18 +14,14 @@ from typing import List, Optional
 def check_if_user_in_whitelist(user_id: int) -> bool:
     """
     Проверяет, есть ли пользователь в whitelist
-    
+
     Args:
         user_id (int): ID пользователя в Telegram
-        
+
     Returns:
         bool: True если пользователь в whitelist, False иначе
     """
-    # Если whitelist пустой, разрешаем всем
-    if not USERS_WHITELIST or not any(USERS_WHITELIST):
-        return True
-    
-    return str(user_id) in USERS_WHITELIST
+    return whitelist_manager.is_user_allowed(str(user_id))
 
 
 def send_inline_keyboard():
@@ -544,4 +540,40 @@ def make_api_request(url: str, method: str = "GET", data: dict = None, headers: 
     except Exception as e:
         print(f"❌ Неожиданная ошибка: {e}")
         return None
+
+
+def add_to_whitelist(user_id: str) -> bool:
+    """
+    Добавляет пользователя в whitelist
+
+    Args:
+        user_id (str): ID пользователя для добавления
+
+    Returns:
+        bool: True если успешно добавлен, False иначе
+    """
+    return whitelist_manager.add_user(user_id)
+
+
+def remove_from_whitelist(user_id: str) -> bool:
+    """
+    Удаляет пользователя из whitelist
+
+    Args:
+        user_id (str): ID пользователя для удаления
+
+    Returns:
+        bool: True если успешно удален, False иначе
+    """
+    return whitelist_manager.remove_user(user_id)
+
+
+def get_whitelist_users() -> List[str]:
+    """
+    Получает список всех пользователей в whitelist
+
+    Returns:
+        List[str]: Список ID пользователей
+    """
+    return whitelist_manager.get_all_users()
 

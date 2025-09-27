@@ -3,7 +3,9 @@
 
 # токен для телеграм бота
 TELEGRAM_BOT_TOKEN = "YOURKEY"
-# список пользователей, которым доступен бот
-USERS_WHITELIST = [
-    "ID"
-]
+
+# Список разрешенных пользователей теперь хранится в файле whitelist.txt
+# Используйте команды бота для управления whitelist:
+# /add_to_whitelist <user_id> - добавить пользователя
+# /remove_from_whitelist <user_id> - удалить пользователя
+# /show_whitelist - показать список пользователей

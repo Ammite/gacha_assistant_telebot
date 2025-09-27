@@ -2,11 +2,12 @@ import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton, InputMediaPhoto, BotCommand
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ContextTypes
 from telegram.constants import ChatAction
-from config import TELEGRAM_BOT_TOKEN, USERS_WHITELIST
+from config import TELEGRAM_BOT_TOKEN
 from methods import (
     check_if_user_in_whitelist, send_inline_keyboard, send_message, send_keyboard, update_commands,
     get_game_info, get_banner_info, get_useful_links, format_game_message, format_banner_message, format_promocodes_message, load_game_keyboard,
-    get_banner_cards_for_game, create_media_group_from_cards
+    get_banner_cards_for_game, create_media_group_from_cards,
+    add_to_whitelist, remove_from_whitelist, get_whitelist_users
 )
 from banner_manager import banner_manager
 from promocodes.parsing import get_promocodes
@@ -85,6 +86,10 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/clear_cache - Очистить кеш изображений\n"
         "/cache_stats - Статистика кеша\n"
         "/update_commands - Обновить команды бота\n\n"
+        "👑 Команды управления whitelist (только для владельца):\n"
+        "/add_to_whitelist <id> - Добавить пользователя в whitelist\n"
+        "/remove_from_whitelist <id> - Удалить пользователя из whitelist\n"
+        "/show_whitelist - Показать список пользователей\n\n"
         "💡 Совет: Используйте кнопки меню для удобной навигации!"
     )
     
@@ -240,7 +245,10 @@ async def update_commands_command(update: Update, context: ContextTypes.DEFAULT_
             BotCommand("banner_status", "Статус баннеров по играм"),
             BotCommand("clear_cache", "Очистить кеш изображений"),
             BotCommand("cache_stats", "Статистика кеша"),
-            BotCommand("update_commands", "Обновить команды бота")
+            BotCommand("update_commands", "Обновить команды бота"),
+            BotCommand("add_to_whitelist", "👑 Добавить пользователя в whitelist"),
+            BotCommand("remove_from_whitelist", "👑 Удалить пользователя из whitelist"),
+            BotCommand("show_whitelist", "👑 Показать список пользователей")
         ]
 
         # Устанавливаем команды через API
@@ -260,6 +268,98 @@ async def menu_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🏠 Главное меню",
         reply_markup=get_main_menu()
     )
+
+
+# Обработчик команды /add_to_whitelist
+async def add_to_whitelist_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработчик команды /add_to_whitelist"""
+    user_id = update.effective_user.id
+
+    # Проверяем, что команду выполняет только владелец бота
+    if str(user_id) != "435145574":
+        await update.message.reply_text("❌ У вас нет прав для выполнения этой команды")
+        logger.warning(f"Пользователь {user_id} попытался добавить пользователя в whitelist")
+        return
+
+    # Проверяем аргументы команды
+    if not context.args or len(context.args) != 1:
+        await update.message.reply_text(
+            "❌ Использование: /add_to_whitelist <user_id>\n"
+            "Пример: /add_to_whitelist 123456789"
+        )
+        return
+
+    target_user_id = context.args[0].strip()
+
+    # Валидация ID
+    if not target_user_id.isdigit():
+        await update.message.reply_text("❌ ID пользователя должен содержать только цифры")
+        return
+
+    # Добавляем пользователя
+    if add_to_whitelist(target_user_id):
+        await update.message.reply_text(f"✅ Пользователь {target_user_id} добавлен в whitelist")
+        logger.info(f"Пользователь {user_id} добавил {target_user_id} в whitelist")
+    else:
+        await update.message.reply_text(f"❌ Не удалось добавить пользователя {target_user_id} в whitelist")
+
+
+# Обработчик команды /remove_from_whitelist
+async def remove_from_whitelist_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработчик команды /remove_from_whitelist"""
+    user_id = update.effective_user.id
+
+    # Проверяем, что команду выполняет только владелец бота
+    if str(user_id) != "435145574":
+        await update.message.reply_text("❌ У вас нет прав для выполнения этой команды")
+        logger.warning(f"Пользователь {user_id} попытался удалить пользователя из whitelist")
+        return
+
+    # Проверяем аргументы команды
+    if not context.args or len(context.args) != 1:
+        await update.message.reply_text(
+            "❌ Использование: /remove_from_whitelist <user_id>\n"
+            "Пример: /remove_from_whitelist 123456789"
+        )
+        return
+
+    target_user_id = context.args[0].strip()
+
+    # Валидация ID
+    if not target_user_id.isdigit():
+        await update.message.reply_text("❌ ID пользователя должен содержать только цифры")
+        return
+
+    # Удаляем пользователя
+    if remove_from_whitelist(target_user_id):
+        await update.message.reply_text(f"✅ Пользователь {target_user_id} удален из whitelist")
+        logger.info(f"Пользователь {user_id} удалил {target_user_id} из whitelist")
+    else:
+        await update.message.reply_text(f"❌ Не удалось удалить пользователя {target_user_id} из whitelist")
+
+
+# Обработчик команды /show_whitelist
+async def show_whitelist_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработчик команды /show_whitelist"""
+    user_id = update.effective_user.id
+
+    # Проверяем, что команду выполняет только владелец бота
+    if str(user_id) != "435145574":
+        await update.message.reply_text("❌ У вас нет прав для выполнения этой команды")
+        logger.warning(f"Пользователь {user_id} попытался просмотреть whitelist")
+        return
+
+    users = get_whitelist_users()
+
+    if not users:
+        await update.message.reply_text("📝 Whitelist пустой")
+        return
+
+    # Форматируем список пользователей
+    user_list = "\n".join(f"• {user_id}" for user_id in sorted(users))
+    message = f"📝 Пользователи в whitelist ({len(users)}):\n{user_list}"
+
+    await update.message.reply_text(message)
 
 # Обработчик текстовых сообщений
 async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -572,6 +672,9 @@ def main():
     application.add_handler(CommandHandler("clear_cache", clear_cache_command))
     application.add_handler(CommandHandler("cache_stats", cache_stats_command))
     application.add_handler(CommandHandler("update_commands", update_commands_command))
+    application.add_handler(CommandHandler("add_to_whitelist", add_to_whitelist_command))
+    application.add_handler(CommandHandler("remove_from_whitelist", remove_from_whitelist_command))
+    application.add_handler(CommandHandler("show_whitelist", show_whitelist_command))
 
     # Добавляем обработчик текстовых сообщений
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
