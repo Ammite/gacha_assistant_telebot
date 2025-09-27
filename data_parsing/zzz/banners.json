@@ -1,0 +1,54 @@
+[
+    {
+        "version": "Current",
+        "phase": "Banner 1",
+        "dates": {
+            "start": "2025-09-24",
+            "end": "2025-10-14"
+        },
+        "featured_5": [
+            {
+                "name": "Orphie and Magus",
+                "url": "https://img.game8.co/4230539/1740f1d50f2ac381113a7ec17e3169f4.png/show",
+                "character_url": "https://game8.co/games/Zenless-Zone-Zero/archives/539135"
+            },
+            {
+                "name": "Anton",
+                "url": "https://img.game8.co/3923999/207ec3d48ccaa4b6c1bcc3f86fa9da28.png/show",
+                "character_url": "https://game8.co/games/Zenless-Zone-Zero/archives/436886"
+            },
+            {
+                "name": "Lucy",
+                "url": "https://img.game8.co/3924006/121cb049558c2fddc6da0f7c1cd7e746.png/show",
+                "character_url": "https://game8.co/games/Zenless-Zone-Zero/archives/459730"
+            }
+        ],
+        "featured_4": []
+    },
+    {
+        "version": "Current",
+        "phase": "Banner 2",
+        "dates": {
+            "start": "2025-09-24",
+            "end": "2025-10-14"
+        },
+        "featured_5": [
+            {
+                "name": "Evelyn",
+                "url": "https://img.game8.co/4080090/fcc04fb9757fdb4c738aa20c6542a365.png/show",
+                "character_url": "https://game8.co/games/Zenless-Zone-Zero/archives/490872"
+            },
+            {
+                "name": "Anton",
+                "url": "https://img.game8.co/3923999/207ec3d48ccaa4b6c1bcc3f86fa9da28.png/show",
+                "character_url": "https://game8.co/games/Zenless-Zone-Zero/archives/436886"
+            },
+            {
+                "name": "Lucy",
+                "url": "https://img.game8.co/3924006/121cb049558c2fddc6da0f7c1cd7e746.png/show",
+                "character_url": "https://game8.co/games/Zenless-Zone-Zero/archives/459730"
+            }
+        ],
+        "featured_4": []
+    }
+]

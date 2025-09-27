@@ -1,27 +1,23 @@
 from telegram import InlineKeyboardButton
 keyboard = [
     [
-        InlineKeyboardButton("📊 Getsuga", url="https://fribbels.github.io/hsr-optimizer#showcase?id=700431688"),
-        InlineKeyboardButton("📊 Farewell", url="https://fribbels.github.io/hsr-optimizer#showcase?id=718149053")
+        InlineKeyboardButton("📊 Ammiteus", url="https://akasha.cv/profile/720613453"),
+    ],
+    [InlineKeyboardButton("KQM", url="https://keqingmains.com")],
+    [InlineKeyboardButton("Планер", url="https://seelie.me/characters")],
+    [InlineKeyboardButton("Tier List", url="https://genshin-info.ru/top-personazhej")],
+    [
+        InlineKeyboardButton("Бездна", url="https://homdgcat.wiki/gi/abyss?lang=EN"),
+        InlineKeyboardButton("Театр", url="https://homdgcat.wiki/gi/maze?lang=EN")
     ],
     [
-        InlineKeyboardButton("📊 Ammiteus", url="https://fribbels.github.io/hsr-optimizer#showcase?id=700592438"),
-        InlineKeyboardButton("📊 Zhyd", url="https://fribbels.github.io/hsr-optimizer#showcase?id=719764104")
+        InlineKeyboardButton("Натиск", url="https://homdgcat.wiki/gi/3boss?lang=EN"),
     ],
-    [InlineKeyboardButton("0 циклов", url="https://tuopaimf.com")],
-    [InlineKeyboardButton("Tier List", url="https://www.prydwen.gg/star-rail/tier-list")],
+    [InlineKeyboardButton("Сливы от HOMDGCAT", url="https://homdgcat.wiki/gi/change")],
     [
-        InlineKeyboardButton("Апок", url="https://homdgcat.wiki/sr/shadow?lang=EN"),
-        InlineKeyboardButton("MOC", url="https://homdgcat.wiki/sr/chaos?lang=EN")
-    ],
-    [
-        InlineKeyboardButton("ПФ", url="https://homdgcat.wiki/sr/fiction?lang=EN"),
-        InlineKeyboardButton("Арбитраж", url="https://homdgcat.wiki/sr/arbitration/?lang=EN")
-    ],
-    [InlineKeyboardButton("Сливы от HOMDGCAT", url="https://homdgcat.wiki/sr/future")],
-    [
-        InlineKeyboardButton("Персы", url="https://starrailstation.com/en/characters"),
-        InlineKeyboardButton("Крутки", url="https://starrailstation.com/en/warp#char_event")
+        InlineKeyboardButton("Персы", url="https://paimon.moe/characters"),
+        InlineKeyboardButton("Крутки", url="https://paimon.moe/wish")
     ],
     [InlineKeyboardButton("История баннеров", callback_data="genshin_banners")],
+    [InlineKeyboardButton("Промокоды", callback_data="genshin_codes")],
 ]

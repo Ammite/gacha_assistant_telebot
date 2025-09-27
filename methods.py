@@ -1,7 +1,13 @@
 # Тут должны быть все функции для запросов 
+from tkinter import NO
 import requests
 from telegram import BotCommand, InlineKeyboardButton
 from config import USERS_WHITELIST
+from banner_manager import banner_manager
+from banner_card.creating_banner_card import make_banner_card_base64
+from io import BytesIO
+import base64
+from typing import List, Optional
 
 
 # Возможно как врапер или просто функция, для проверки пользователя на доступ к боту по chat_id
@@ -56,7 +62,9 @@ async def update_commands(bot):
     commands = [
         BotCommand("start", "🚀 Запустить бота"),
         BotCommand("help", "🆘 Получить помощь"),
-        BotCommand("menu", "🏠 Главное меню")
+        BotCommand("menu", "🏠 Главное меню"),
+        BotCommand("update_banners", "🔄 Обновить данные баннеров"),
+        BotCommand("banner_status", "📊 Статус баннеров")
     ]
     
     try:
@@ -81,33 +89,37 @@ def get_game_info(game_name: str) -> dict:
             "name": "Genshin Impact",
             "emoji": "🌟",
             "status": "Активная игра",
-            "version": "4.x",
+            "version": "6.x",
             "developer": "HoYoverse",
-            "last_update": "В разработке"
+            "last_update": "В разработке",
+            "promocode_link": "https://genshin.hoyoverse.com/ru/gift?code="
         },
         "hsr": {
             "name": "Honkai: Star Rail",
             "emoji": "🚀",
             "status": "Активная игра",
-            "version": "2.x",
+            "version": "3.x",
             "developer": "HoYoverse",
-            "last_update": "В разработке"
+            "last_update": "В разработке",
+            "promocode_link": "https://hsr.hoyoverse.com/gift?code="
         },
         "zzz": {
             "name": "Zenless Zone Zero",
             "emoji": "⚡",
-            "status": "В разработке",
-            "version": "Beta",
+            "status": "Активная игра",
+            "version": "2.X",
             "developer": "HoYoverse",
-            "last_update": "В разработке"
+            "last_update": "В разработке",
+            "promocode_link": "https://zenless.hoyoverse.com/redemption?code="
         },
         "wuwa": {
             "name": "Wuthering Waves",
             "emoji": "🌊",
-            "status": "В разработке",
+            "status": "Активная игра",
             "version": "Beta",
             "developer": "Kuro Games",
-            "last_update": "В разработке"
+            "last_update": "В разработке",
+            "promocode_link": None
         }
     }
     
@@ -117,38 +129,52 @@ def get_game_info(game_name: str) -> dict:
 def get_banner_info(game_name: str) -> dict:
     """
     Получает информацию о текущих баннерах игры
-    
+
     Args:
         game_name (str): Название игры
-        
+
     Returns:
         dict: Информация о баннерах
     """
-    # Заглушка - в будущем здесь будет парсинг данных
-    banner_info = {
-        "genshin": {
-            "character_banner": "Информация будет добавлена позже",
-            "weapon_banner": "Информация будет добавлена позже",
-            "last_update": "В разработке"
-        },
-        "hsr": {
-            "character_banner": "Информация будет добавлена позже",
-            "light_cone_banner": "Информация будет добавлена позже",
-            "last_update": "В разработке"
-        },
-        "zzz": {
-            "character_banner": "Информация будет добавлена позже",
-            "weapon_banner": "Информация будет добавлена позже",
-            "last_update": "В разработке"
-        },
-        "wuwa": {
-            "character_banner": "Информация будет добавлена позже",
-            "weapon_banner": "Информация будет добавлена позже",
-            "last_update": "В разработке"
+    import logging
+    from datetime import datetime
+
+    logger = logging.getLogger(__name__)
+
+    logger.debug(f"get_banner_info вызвана для игры: {game_name}")
+
+    try:
+        current_banners, next_banners = banner_manager.get_current_banners(game_name)
+
+        logger.debug(f"Получено баннеров для {game_name}: current={len(current_banners)}, next={len(next_banners)}")
+
+        # Получаем текущую дату
+        current_date = datetime.now().strftime("%d.%m.%Y")
+
+        banner_info = {
+            "current_banners": current_banners,
+            "next_banners": next_banners,
+            "has_current": len(current_banners) > 0,
+            "has_next": len(next_banners) > 0,
+            "last_update": "Актуально",
+            "current_date": current_date
         }
-    }
-    
-    return banner_info.get(game_name, {})
+
+        logger.debug(f"Результат для {game_name}: has_current={banner_info['has_current']}, has_next={banner_info['has_next']}")
+
+        return banner_info
+
+    except Exception as e:
+        logger.error(f"Ошибка получения информации о баннерах для {game_name}: {e}")
+        current_date = datetime.now().strftime("%d.%m.%Y")
+        return {
+            "current_banners": [],
+            "next_banners": [],
+            "has_current": False,
+            "has_next": False,
+            "last_update": "Ошибка загрузки",
+            "current_date": current_date
+        }
 
 
 def get_useful_links(category: str) -> dict:
@@ -205,17 +231,132 @@ def format_banner_message(game_name: str, banner_data: dict) -> str:
     game_info = get_game_info(game_name)
     emoji = game_info.get("emoji", "🎮")
     name = game_info.get("name", "Игра")
-    
-    message = f"{emoji} Текущие баннеры {name}\n\n"
-    
-    for banner_type, banner_info in banner_data.items():
-        if banner_type != "last_update":
-            message += f"📋 {banner_type.replace('_', ' ').title()}: {banner_info}\n"
-    
-    message += f"\n🔄 Последнее обновление: {banner_data.get('last_update', 'Неизвестно')}"
-    
+    current_date = banner_data.get("current_date", "Неизвестно")
+
+    message = f"{emoji} Текущие баннеры {name}\n"
+    message += f"📅 Сегодня: {current_date}\n\n"
+
+    if not banner_data.get("has_current") and not banner_data.get("has_next"):
+        message += "❌ Информация о баннерах недоступна\n"
+        message += "Возможные причины:\n"
+        message += "• Парсер не готов для этой игры\n"
+        message += "• Нет данных о баннерах\n"
+        message += "• Ошибка загрузки данных\n\n"
+        message += f"🔄 Статус: {banner_data.get('last_update', 'Неизвестно')}"
+        return message
+
+    # Текущие баннеры
+    if banner_data.get("has_current"):
+        message += "🟢 <b>Текущие баннеры:</b>\n"
+        for banner in banner_data["current_banners"]:
+            version = banner.get("version", "?")
+            phase = banner.get("phase", "?")
+            dates = banner.get("dates", {})
+            start_date = dates.get("start", "?")
+            end_date = dates.get("end", "?")
+
+            message += f"• {version} - {phase}\n"
+            message += f"  📅 {start_date} → {end_date}\n"
+
+            # 5★ персонажи
+            featured_5 = banner.get("featured_5", [])
+            if featured_5:
+                char_names = []
+                for char in featured_5:
+                    if char.get("character_url"):
+                        char_names.append(f'<a href="{char["character_url"]}">{char["name"]}</a>')
+                    else:
+                        char_names.append(char["name"])
+                message += f"  ⭐ 5★: {', '.join(char_names)}\n"
+
+            # 4★ персонажи (если есть)
+            featured_4 = banner.get("featured_4", [])
+            if featured_4:
+                char_names = []
+                for char in featured_4:
+                    if char.get("character_url"):
+                        char_names.append(f'<a href="{char["character_url"]}">{char["name"]}</a>')
+                    else:
+                        char_names.append(char["name"])
+                message += f"  ⭐ 4★: {', '.join(char_names)}\n"
+
+            message += "\n"
+    else:
+        message += "❌ Нет активных баннеров\n\n"
+
+    # Следующие баннеры
+    if banner_data.get("has_next"):
+        message += "🔮 <b>Следующие баннеры:</b>\n"
+        for banner in banner_data["next_banners"][:2]:  # Показываем только первые 2
+            version = banner.get("version", "?")
+            phase = banner.get("phase", "?")
+            dates = banner.get("dates", {})
+            start_date = dates.get("start", "?")
+            end_date = dates.get("end", "?")
+
+            message += f"• {version} - {phase}\n"
+            message += f"  📅 {start_date} → {end_date}\n"
+
+            # 5★ персонажи
+            featured_5 = banner.get("featured_5", [])
+            if featured_5:
+                char_names = []
+                for char in featured_5:
+                    if char.get("character_url"):
+                        char_names.append(f'<a href="{char["character_url"]}">{char["name"]}</a>')
+                    else:
+                        char_names.append(char["name"])
+                message += f"  ⭐ 5★: {', '.join(char_names)}\n"
+
+            # 4★ персонажи (если есть)
+            featured_4 = banner.get("featured_4", [])
+            if featured_4:
+                char_names = []
+                for char in featured_4:
+                    if char.get("character_url"):
+                        char_names.append(f'<a href="{char["character_url"]}">{char["name"]}</a>')
+                    else:
+                        char_names.append(char["name"])
+                message += f"  ⭐ 4★: {', '.join(char_names)}\n"
+
+            message += "\n"
+    else:
+        message += "❓ Информация о следующих баннерах пока недоступна\n\n"
+
+    message += f"🔄 Последнее обновление: {banner_data.get('last_update', 'Неизвестно')}"
+
     return message
 
+def format_promocodes_message(game_name: str, promocode_data: list) -> str:
+    """
+    Форматирует сообщение с информацией о баннерах
+    
+    Args:
+        game_name (str): Название игры
+        banner_data (dict): Данные о баннерах
+        
+    Returns:
+        str: Отформатированное сообщение
+    """
+    game_info = get_game_info(game_name)
+    emoji = game_info.get("emoji", "🎮")
+    name = game_info.get("name", "Игра")
+    promocode_redemption_links = game_info.get("promocode_link", None)
+
+    if not promocode_redemption_links:
+        message = "К сожалению, на данный момент данный функционал не доступен!"
+        return message
+    
+    message = f"{emoji} Текущие промокоды {name}\n\n"
+    
+    for promocode_entity in promocode_data:
+        promocode = promocode_entity.get("code", None)
+        promocode_reward = promocode_entity.get("rewards", None)
+        promocode_redemption_link = promocode_redemption_links + str(promocode)
+        if not promocode:
+            continue
+        message += f"📋 <a href=\"{promocode_redemption_link}\">{promocode}</a> -> {promocode_reward}\n"
+    return message
 
 def format_game_message(game_name: str, game_data: dict) -> str:
     """
@@ -275,6 +416,98 @@ def load_game_keyboard(game_name: str):
     except ImportError as e:
         print(f"❌ Ошибка загрузки клавиатуры для {game_name}: {e}")
         return []
+
+
+def create_banner_card(game_name: str, banner_data: dict) -> Optional[BytesIO]:
+    """
+    Создает карточку баннера и возвращает её как BytesIO объект
+    Использует кеширование изображений
+
+    Args:
+        game_name (str): Название игры
+        banner_data (dict): Данные баннера
+
+    Returns:
+        Optional[BytesIO]: Объект изображения или None при ошибке
+    """
+    from banner_cache import get_or_create_banner_image
+    import logging
+    logger = logging.getLogger(__name__)
+
+    try:
+        # Получаем base64 строку из кеша или создаем новую
+        img_base64 = get_or_create_banner_image(banner_data, game_name)
+
+        if not img_base64:
+            logger.error(f"Не удалось получить изображение баннера для {game_name}")
+            return None
+
+        # Конвертируем в BytesIO
+        img_bytes = BytesIO(base64.b64decode(img_base64))
+        logger.debug(f"Изображение баннера создано/получено из кеша для {game_name}")
+
+        return img_bytes
+
+    except Exception as e:
+        logger.error(f"Ошибка создания карточки баннера для {game_name}: {e}")
+        return None
+
+
+def get_banner_cards_for_game(game_name: str) -> List[BytesIO]:
+    """
+    Получает карточки для всех текущих баннеров игры
+    
+    Args:
+        game_name (str): Название игры
+        
+    Returns:
+        List[BytesIO]: Список карточек баннеров
+    """
+    try:
+        current_banners, next_banners = banner_manager.get_current_banners(game_name)
+        cards = []
+        
+        # Создаем карточки для текущих баннеров
+        for banner in current_banners:
+            card = create_banner_card(game_name, banner)
+            if card:
+                cards.append(card)
+        
+        # Создаем карточки для следующих баннеров (максимум 2)
+        for banner in next_banners[:2]:
+            card = create_banner_card(game_name, banner)
+            if card:
+                cards.append(card)
+        
+        return cards
+        
+    except Exception as e:
+        print(f"Ошибка получения карточек баннеров для {game_name}: {e}")
+        return []
+
+def create_media_group_from_cards(cards: List[BytesIO], game_name: str) -> List:
+    """
+    Создает медиа-группу из карточек баннеров
+    
+    Args:
+        cards (List[BytesIO]): Список карточек баннеров
+        game_name (str): Название игры
+        
+    Returns:
+        List: Медиа-группа для отправки
+    """
+    from telegram import InputMediaPhoto
+    
+    media_group = []
+    game_info = get_game_info(game_name)
+    game_emoji = game_info.get("emoji", "🎮")
+    
+    for i, card in enumerate(cards):
+        card.seek(0)  # Сбрасываем позицию в начало файла
+        caption = f"{game_emoji} Карточка баннера {i+1}" if i == 0 else None
+        media_group.append(InputMediaPhoto(media=card, caption=caption))
+    
+    return media_group
 
 
 def make_api_request(url: str, method: str = "GET", data: dict = None, headers: dict = None):

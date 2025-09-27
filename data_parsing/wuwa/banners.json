@@ -1,0 +1,138 @@
+[
+    {
+        "version": "Current",
+        "phase": "Available Convene Banners",
+        "dates": {
+            "start": "2025-09-17",
+            "end": "2025-10-08"
+        },
+        "featured_5": [
+            {
+                "name": "Iuno",
+                "url": "https://img.game8.co/4235647/9966108e3c229efdfb4ae1961fe4cf98.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/524889",
+                "rarity": "5★",
+                "type": "Aero",
+                "banner": "Across Time's Waxes and Wanes"
+            },
+            {
+                "name": "Ciaccona",
+                "url": "https://img.game8.co/4145722/b4d732a258b2a2496c44764419c8971b.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/507924",
+                "rarity": "5★",
+                "type": "Aero",
+                "banner": "Through Verses and Rhythms"
+            },
+            {
+                "name": "Woodland Aria",
+                "url": "https://img.game8.co/4153895/9aaf7491701afc0de58d7749f2de9eaa.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/514610",
+                "rarity": "5★",
+                "type": "Pistols",
+                "banner": "Absolute Pulsation (Woodland Aria)"
+            }
+        ],
+        "featured_4": [
+            {
+                "name": "Aalto",
+                "url": "https://img.game8.co/3940616/af905245b0910b5155bd524ee8854867.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/454214",
+                "rarity": "4★",
+                "type": "Aero",
+                "banner": "Across Time's Waxes and Wanes"
+            },
+            {
+                "name": "Baizhi",
+                "url": "https://img.game8.co/3940621/a3ef8d43b808677bc07db927c530651c.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/454224",
+                "rarity": "4★",
+                "type": "Glacio",
+                "banner": "Across Time's Waxes and Wanes"
+            },
+            {
+                "name": "Taoqi",
+                "url": "https://img.game8.co/3940599/ecc467b4cfc8c301644cc8f58e0a42ad.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/454226",
+                "rarity": "4★",
+                "type": "Havoc",
+                "banner": "Across Time's Waxes and Wanes"
+            },
+            {
+                "name": "Relativistic Jet",
+                "url": "https://img.game8.co/3995127/484ecad44593580fec201ffd3265a70c.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/474513",
+                "rarity": "4★",
+                "type": "Pistols",
+                "banner": "Absolute Pulsation (Moongazer's Sigil)"
+            },
+            {
+                "name": "Celestial Spiral",
+                "url": "https://img.game8.co/3995128/b64bfb463cff5c6a33a056fc186a379f.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/474517",
+                "rarity": "4★",
+                "type": "Gauntlets",
+                "banner": "Absolute Pulsation (Moongazer's Sigil)"
+            },
+            {
+                "name": "Fusion Accretion",
+                "url": "https://img.game8.co/3995129/14fc89aa563d593201865f82c71b5438.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/474512",
+                "rarity": "4★",
+                "type": "Rectifier",
+                "banner": "Absolute Pulsation (Moongazer's Sigil)"
+            }
+        ]
+    },
+    {
+        "version": "Upcoming",
+        "phase": "Upcoming",
+        "dates": {
+            "start": "2025-10-09",
+            "end": null
+        },
+        "featured_5": [
+            {
+                "name": "Galbrena",
+                "url": "https://img.game8.co/4268728/7a76ebbd36fb35e8007d5b2f04f158cb.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/524888",
+                "rarity": "5★",
+                "type": null,
+                "banner": "From AshesRoar of Triumph"
+            },
+            {
+                "name": "Lupa",
+                "url": "https://img.game8.co/4168366/19001d913841f4fd682ca41a15b219c4.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/520661",
+                "rarity": "5★",
+                "type": null,
+                "banner": "From AshesRoar of Triumph"
+            }
+        ],
+        "featured_4": [
+            {
+                "name": "Mortefi",
+                "url": "https://img.game8.co/3940603/0b98821424d895c39638dcc8493bb409.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/454222",
+                "rarity": "4★",
+                "type": null,
+                "banner": "From AshesRoar of Triumph"
+            },
+            {
+                "name": "Sanhua",
+                "url": "https://img.game8.co/3940594/5a50dfd046bf0b4de04c062ed0a92b7f.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/454225",
+                "rarity": "4★",
+                "type": null,
+                "banner": "From AshesRoar of Triumph"
+            },
+            {
+                "name": "Lumi",
+                "url": "https://img.game8.co/4033262/9736c1c988ac7d5f5934496cf6257077.png/show",
+                "character_url": "https://game8.co/games/Wuthering-Waves/archives/473488",
+                "rarity": "4★",
+                "type": null,
+                "banner": "From AshesRoar of Triumph"
+            }
+        ]
+    }
+]

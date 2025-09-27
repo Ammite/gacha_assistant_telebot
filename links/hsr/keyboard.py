@@ -24,4 +24,5 @@ keyboard = [
         InlineKeyboardButton("Крутки", url="https://starrailstation.com/en/warp#char_event")
     ],
     [InlineKeyboardButton("История баннеров", callback_data="hsr_banners")],
+    [InlineKeyboardButton("Промокоды", callback_data="hsr_codes")],
 ]

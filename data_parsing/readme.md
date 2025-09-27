@@ -18,3 +18,6 @@
 - ZZZ: https://game8.co/games/Zenless-Zone-Zero/archives/435687
 - Wuwa: https://game8.co/games/Wuthering-Waves/archives/453303
 - HSR: https://game8.co/games/Honkai-Star-Rail/archives/474951
+
+### Получение промокодов: 
+https://github.com/seriaati/hoyo-codes?tab=readme-ov-file

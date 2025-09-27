@@ -1,0 +1,66 @@
+[
+    {
+        "version": "6.0",
+        "phase": "Phase 1",
+        "dates": {
+            "start": "2025-09-10",
+            "end": "2025-09-30"
+        },
+        "featured_5": [
+            {
+                "name": "Nahida",
+                "url": "https://img.game8.co/3604130/3e6db61ed6d732571e783aefb6280738.png/show",
+                "character_url": "https://game8.co/games/Genshin-Impact/archives/Nahida-Best-Builds"
+            },
+            {
+                "name": "Lauma",
+                "url": "https://img.game8.co/4269760/0ae338d81812aeb15f6b4bcb196a8060.png/show",
+                "character_url": "https://game8.co/games/Genshin-Impact/archives/538066"
+            }
+        ],
+        "featured_4": [
+            {
+                "name": "Barbara",
+                "url": "https://img.game8.co/3294974/5e203f4ca8c30907bae5ad23432d6047.png/show",
+                "character_url": "https://game8.co/games/Genshin-Impact/archives/297517"
+            },
+            {
+                "name": "Shinobu",
+                "url": "https://img.game8.co/3539169/6dc2b1ce3d5bb8fe449d38c4416b2de4.png/show",
+                "character_url": "https://game8.co/games/Genshin-Impact/archives/346199"
+            },
+            {
+                "name": "Kaveh",
+                "url": "https://img.game8.co/3681698/fad0a8213836388b08d0ec319c749d04.png/show",
+                "character_url": "https://game8.co/games/Genshin-Impact/archives/Kaveh-Best-Builds"
+            }
+        ]
+    },
+    {
+        "version": "6.0",
+        "phase": "Phase 2",
+        "dates": {
+            "start": "2025-09-30",
+            "end": "2025-10-21"
+        },
+        "featured_5": [
+            {
+                "name": "Yelan",
+                "url": "https://img.game8.co/3530017/258a68ae18705bbd1d276f65c2e94c27.png/show",
+                "character_url": "https://game8.co/games/Genshin-Impact/archives/372781"
+            },
+            {
+                "name": "Flins",
+                "url": "https://img.game8.co/4226273/f0ab747096010b2ea95f68431e979176.png/show",
+                "character_url": "https://game8.co/games/Genshin-Impact/archives/538451"
+            }
+        ],
+        "featured_4": [
+            {
+                "name": "Aino",
+                "url": "https://img.game8.co/4271080/dadd8837cc518b38eb110eafd6c78bb2.png/show",
+                "character_url": "https://game8.co/games/Genshin-Impact/archives/537903"
+            }
+        ]
+    }
+]
