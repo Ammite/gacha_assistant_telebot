@@ -2,7 +2,7 @@ import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton, InputMediaPhoto, BotCommand
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ContextTypes
 from telegram.constants import ChatAction
-from config import TELEGRAM_BOT_TOKEN
+from config import TELEGRAM_BOT_TOKEN, ADMIN_ID
 from methods import (
     check_if_user_in_whitelist, send_inline_keyboard, send_message, send_keyboard, update_commands,
     get_game_info, get_banner_info, get_useful_links, format_game_message, format_banner_message, format_promocodes_message, load_game_keyboard,
@@ -276,7 +276,7 @@ async def add_to_whitelist_command(update: Update, context: ContextTypes.DEFAULT
     user_id = update.effective_user.id
 
     # Проверяем, что команду выполняет только владелец бота
-    if str(user_id) != "435145574":
+    if str(user_id) != ADMIN_ID:
         await update.message.reply_text("❌ У вас нет прав для выполнения этой команды")
         logger.warning(f"Пользователь {user_id} попытался добавить пользователя в whitelist")
         return
@@ -310,7 +310,7 @@ async def remove_from_whitelist_command(update: Update, context: ContextTypes.DE
     user_id = update.effective_user.id
 
     # Проверяем, что команду выполняет только владелец бота
-    if str(user_id) != "435145574":
+    if str(user_id) != ADMIN_ID:
         await update.message.reply_text("❌ У вас нет прав для выполнения этой команды")
         logger.warning(f"Пользователь {user_id} попытался удалить пользователя из whitelist")
         return
@@ -344,7 +344,7 @@ async def show_whitelist_command(update: Update, context: ContextTypes.DEFAULT_T
     user_id = update.effective_user.id
 
     # Проверяем, что команду выполняет только владелец бота
-    if str(user_id) != "435145574":
+    if str(user_id) != ADMIN_ID:
         await update.message.reply_text("❌ У вас нет прав для выполнения этой команды")
         logger.warning(f"Пользователь {user_id} попытался просмотреть whitelist")
         return
@@ -658,6 +658,11 @@ def main():
     # Проверяем наличие токена
     if not TELEGRAM_BOT_TOKEN:
         logger.error("TELEGRAM_BOT_TOKEN не установлен в config.py")
+        return
+
+    # Проверяем наличие ADMIN_ID
+    if not ADMIN_ID:
+        logger.error("ADMIN_ID не установлен в config.py")
         return
 
     # Создаем приложение

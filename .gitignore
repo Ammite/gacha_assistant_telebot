@@ -1,4 +1,28 @@
-__pycache__
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project specific
 config.py
-venv
-cache/*
+cache/
+*.log
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+test_*.py

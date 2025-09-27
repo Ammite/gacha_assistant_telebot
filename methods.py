@@ -1,4 +1,6 @@
-# Тут должны быть все функции для запросов 
+# Тут должны быть все функции для запросов
+import logging
+import html
 import requests
 from telegram import BotCommand, InlineKeyboardButton
 from whitelist_manager import whitelist_manager
@@ -7,6 +9,8 @@ from banner_card.creating_banner_card import make_banner_card_base64
 from io import BytesIO
 import base64
 from typing import List, Optional
+
+logger = logging.getLogger(__name__)
 
 
 # Возможно как врапер или просто функция, для проверки пользователя на доступ к боту по chat_id
@@ -64,9 +68,9 @@ async def update_commands(bot):
     
     try:
         await bot.set_my_commands(commands)
-        print("✅ Команды бота успешно обновлены")
+        logger.info("✅ Команды бота успешно обновлены")
     except Exception as e:
-        print(f"❌ Ошибка при обновлении команд: {e}")
+        logger.error(f"❌ Ошибка при обновлении команд: {e}")
 
 
 def get_game_info(game_name: str) -> dict:
@@ -259,9 +263,9 @@ def format_banner_message(game_name: str, banner_data: dict) -> str:
                 char_names = []
                 for char in featured_5:
                     if char.get("character_url"):
-                        char_names.append(f'<a href="{char["character_url"]}">{char["name"]}</a>')
+                        char_names.append(f'<a href="{html.escape(char["character_url"])}">{html.escape(char["name"])}</a>')
                     else:
-                        char_names.append(char["name"])
+                        char_names.append(html.escape(char["name"]))
                 message += f"  ⭐ 5★: {', '.join(char_names)}\n"
 
             # 4★ персонажи (если есть)
@@ -270,9 +274,9 @@ def format_banner_message(game_name: str, banner_data: dict) -> str:
                 char_names = []
                 for char in featured_4:
                     if char.get("character_url"):
-                        char_names.append(f'<a href="{char["character_url"]}">{char["name"]}</a>')
+                        char_names.append(f'<a href="{html.escape(char["character_url"])}">{html.escape(char["name"])}</a>')
                     else:
-                        char_names.append(char["name"])
+                        char_names.append(html.escape(char["name"]))
                 message += f"  ⭐ 4★: {', '.join(char_names)}\n"
 
             message += "\n"
@@ -298,9 +302,9 @@ def format_banner_message(game_name: str, banner_data: dict) -> str:
                 char_names = []
                 for char in featured_5:
                     if char.get("character_url"):
-                        char_names.append(f'<a href="{char["character_url"]}">{char["name"]}</a>')
+                        char_names.append(f'<a href="{html.escape(char["character_url"])}">{html.escape(char["name"])}</a>')
                     else:
-                        char_names.append(char["name"])
+                        char_names.append(html.escape(char["name"]))
                 message += f"  ⭐ 5★: {', '.join(char_names)}\n"
 
             # 4★ персонажи (если есть)
@@ -309,9 +313,9 @@ def format_banner_message(game_name: str, banner_data: dict) -> str:
                 char_names = []
                 for char in featured_4:
                     if char.get("character_url"):
-                        char_names.append(f'<a href="{char["character_url"]}">{char["name"]}</a>')
+                        char_names.append(f'<a href="{html.escape(char["character_url"])}">{html.escape(char["name"])}</a>')
                     else:
-                        char_names.append(char["name"])
+                        char_names.append(html.escape(char["name"]))
                 message += f"  ⭐ 4★: {', '.join(char_names)}\n"
 
             message += "\n"
@@ -409,7 +413,7 @@ def load_game_keyboard(game_name: str):
         keyboard_with_back = keyboard + [[InlineKeyboardButton("🔙 Главное меню", callback_data="back_to_main")]]
         return keyboard_with_back
     except ImportError as e:
-        print(f"❌ Ошибка загрузки клавиатуры для {game_name}: {e}")
+        logger.error(f"❌ Ошибка загрузки клавиатуры для {game_name}: {e}")
         return []
 
 
@@ -477,7 +481,7 @@ def get_banner_cards_for_game(game_name: str) -> List[BytesIO]:
         return cards
         
     except Exception as e:
-        print(f"Ошибка получения карточек баннеров для {game_name}: {e}")
+        logger.error(f"Ошибка получения карточек баннеров для {game_name}: {e}")
         return []
 
 def create_media_group_from_cards(cards: List[BytesIO], game_name: str) -> List:
@@ -534,10 +538,10 @@ def make_api_request(url: str, method: str = "GET", data: dict = None, headers: 
         return response.json()
         
     except requests.exceptions.RequestException as e:
-        print(f"❌ Ошибка API запроса: {e}")
+        logger.error(f"❌ Ошибка API запроса: {e}")
         return None
     except Exception as e:
-        print(f"❌ Неожиданная ошибка: {e}")
+        logger.error(f"❌ Неожиданная ошибка: {e}")
         return None
 
 

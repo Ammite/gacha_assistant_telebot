@@ -2,7 +2,11 @@
 
 
 # токен для телеграм бота
-TELEGRAM_BOT_TOKEN = "YOURKEY"
+TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
+
+# ID администратора бота (владелец, может управлять whitelist)
+# Получите свой ID через @userinfobot или любым другим способом
+ADMIN_ID = "YOUR_ADMIN_ID_HERE"
 
 # Список разрешенных пользователей теперь хранится в файле whitelist.txt
 # Используйте команды бота для управления whitelist:
