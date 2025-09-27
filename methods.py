@@ -1,5 +1,4 @@
 # Тут должны быть все функции для запросов 
-from tkinter import NO
 import requests
 from telegram import BotCommand, InlineKeyboardButton
 from whitelist_manager import whitelist_manager
